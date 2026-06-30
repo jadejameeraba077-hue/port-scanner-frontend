@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECUREX // Advanced Network Port Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-black text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <nav class="w-full max-w-7xl mx-auto px-6 py-4 flex justify-between items-center border-b border-green-950">
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="text-xs tracking-widest font-extrabold uppercase text-green-500">SecureX // API</span>
+        </div>
+        <div class="hidden md:flex items-center gap-6 text-xs tracking-wider text-zinc-500 uppercase font-medium">
+            <a href="#" class="hover:text-green-500 transition">Core Engine</a>
+            <a href="#" class="hover:text-green-500 transition">Nmap Layer</a>
+            <a href="#" class="hover:text-green-500 transition">Documentation</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-12 flex flex-col lg:flex-row items-center justify-between gap-12">
+        
+        <div class="w-full lg:w-1/2 flex flex-col justify-center text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-950/30 border border-green-900/50 text-green-500 text-xs font-semibold uppercase tracking-wider mb-4 mx-auto lg:mx-0 w-fit">
+                v2.0 Asynchronous Port Scanner
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-white">
+                Next-Gen Infrastructure <span class="text-green-500">Discovery.</span>
+            </h1>
+            <p class="text-zinc-500 text-sm mt-3 max-w-lg leading-relaxed">
+                An advanced enterprise-grade scanner utility powered by Nmap architecture. Scan network segments, resolve hosting vectors, map live ports, and audit micro-service versions instantly.
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-zinc-900 max-w-lg">
+                <div class="flex flex-col gap-1 text-left">
+                    <span class="text-xs font-bold uppercase tracking-wider text-green-500">Live Nmap Engine</span>
+                    <span class="text-xs text-zinc-500">Real-time dynamic infrastructure probing.</span>
+                </div>
+                <div class="flex flex-col gap-1 text-left">
+                    <span class="text-xs font-bold uppercase tracking-wider text-green-500">Banner Grabbing</span>
+                    <span class="text-xs text-zinc-500">Accurate service and patch level validation.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-1/2 flex justify-center">
+            <div class="w-full max-w-md bg-zinc-950 border border-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl">
+                
+                <div id="scannerSection">
+                    <div class="mb-6">
+                        <div class="text-xs font-bold text-green-500 uppercase tracking-widest mb-1">Target Matrix</div>
+                        <div class="text-xs text-zinc-500">Initiate automated infrastructure intelligence</div>
+                    </div>
+
+                    <div class="flex flex-col gap-3 mb-6">
+                        <input type="text" id="target" placeholder="e.g., scanme.nmap.org" 
+                            class="bg-black border border-zinc-800 px-4 py-3 rounded-xl text-sm text-slate-200 placeholder-zinc-700 outline-none focus:border-green-500 transition">
+                        
+                        <button onclick="startScan()" 
+                            class="bg-green-600 hover:bg-green-500 text-black font-extrabold text-sm py-3.5 rounded-xl transition duration-300 active:scale-[0.98]">
+                            Execute Diagnostic Scan
+                        </button>
+
+                        <button onclick="toggleView('info')" 
+                            class="mt-1 w-full bg-zinc-900 hover:bg-zinc-800 text-green-500 border border-zinc-900 font-bold text-xs py-2 rounded-xl transition duration-300 uppercase tracking-wider">
+                            View Docs & Owner Info →
+                        </button>
+                    </div>
+
+                    <div id="progressBox" class="hidden bg-black border border-zinc-900 p-5 rounded-2xl mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span id="statusText" class="text-[10px] text-green-500 font-bold tracking-widest uppercase">Connecting...</span>
+                            <span id="percentText" class="text-xs text-zinc-600 font-bold">0%</span>
+                        </div>
+                        <div class="w-full bg-zinc-950 h-1 rounded-full overflow-hidden border border-zinc-900">
+                            <div id="progressBar" class="bg-green-500 h-full w-[0%] transition-all duration-500 rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <div id="resultBox" class="hidden border border-zinc-900 bg-black rounded-2xl overflow-hidden shadow-xl">
+                        <div class="px-4 py-3 bg-zinc-950 border-b border-zinc-900 text-[10px] font-bold tracking-widest text-green-500 uppercase">
+                            Discovered Live Active Nodes
+                        </div>
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-zinc-950 text-zinc-500 border-b border-zinc-900 font-semibold tracking-wider uppercase text-[10px]">
+                                <tr>
+                                    <th class="p-4">PORT</th>
+                                    <th class="p-4">SERVICE</th>
+                                    <th class="p-4">VERSION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="portsTableBody" class="divide-y divide-zinc-900 text-slate-300">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="infoSection" class="hidden">
+                    <div class="flex justify-between items-center border-b border-zinc-900 pb-3 mb-4">
+                        <div class="text-xs font-bold text-green-500 uppercase tracking-widest">Documentation Hub</div>
+                        <button onclick="toggleView('scanner')" class="text-[10px] text-zinc-500 hover:text-green-500 transition uppercase tracking-wider">← Back</button>
+                    </div>
+
+                    <div class="space-y-4 text-xs text-zinc-400 leading-relaxed mb-6">
+                        <div>
+                            <span class="block font-bold text-white uppercase tracking-wider mb-0.5 text-green-500">// Scanner Definition</span>
+                            <p>A network port scanner probes endpoints to find active gates. It maps infrastructure topology and acts as a security diagnostic utility.</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-2">
+                            <div class="bg-black p-3 rounded-xl border border-zinc-900">
+                                <span class="block text-green-500 font-bold uppercase tracking-wider mb-0.5">PORT Label</span>
+                                <span class="text-zinc-500">Communication path endpoint (e.g., 80, 443).</span>
+                            </div>
+                            <div class="bg-black p-3 rounded-xl border border-zinc-900">
+                                <span class="block text-green-500 font-bold uppercase tracking-wider mb-0.5">SERVICE Label</span>
+                                <span class="text-zinc-500">Identifies network system application protocols.</span>
+                            </div>
+                            <div class="bg-black p-3 rounded-xl border border-zinc-900">
+                                <span class="block text-green-500 font-bold uppercase tracking-wider mb-0.5">VERSION Label</span>
+                                <span class="text-zinc-500">Extracts remote service build info via active banner grabbing.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-zinc-900 flex flex-col gap-2 bg-black p-3.5 rounded-xl border border-green-950/30">
+                        <div>
+                            <span class="block text-[9px] uppercase font-bold tracking-widest text-zinc-600">Project Architect</span>
+                            <span class="text-xs font-bold text-white tracking-wide">Jadeja Meeraba .v</span>
+                        </div>
+                        <div>
+                            <span class="block text-[9px] uppercase font-bold tracking-widest text-zinc-600">Secure Node Mail</span>
+                            <a href="mailto:jadejameeraba077@gmail.com" class="text-xs font-medium text-green-500 hover:underline">jadejameeraba077@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="w-full max-w-7xl mx-auto px-6 py-6 border-t border-zinc-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] tracking-wider text-zinc-600 uppercase">
+        <div>&copy; 2026 SecureX Platform // Academic Sandbox Framework</div>
+        <div class="flex gap-4">
+            <a href="#" class="hover:text-green-500 transition">FastAPI Node</a>
+            <span>/</span>
+            <a href="#" class="hover:text-green-500 transition">Nmap Wrapper</a>
+        </div>
+    </footer>
+
+    <script>
+        const BACKEND_URL = "https://scanner-backend-v2.onrender.com"; 
+
+        // Screen switching controller engine
+        function toggleView(view) {
+            if(view === 'info') {
+                document.getElementById('scannerSection').classList.add('hidden');
+                document.getElementById('infoSection').classList.remove('hidden');
+            } else {
+                document.getElementById('infoSection').classList.add('hidden');
+                document.getElementById('scannerSection').classList.remove('hidden');
+            }
+        }
+
+        async function startScan() {
+            const target = document.getElementById('target').value.trim();
+            if(!target) return alert("Please specify an IP vector or network host domain first!");
+
+            // Reset dashboard state arrays
+            document.getElementById('progressBox').classList.remove('hidden');
+            document.getElementById('resultBox').classList.add('hidden');
+            document.getElementById('progressBar').style.width = `0%`;
+            document.getElementById('percentText').innerText = "0%";
+            document.getElementById('statusText').innerText = "Establishing backend context...";
+            document.getElementById('portsTableBody').innerHTML = '';
+
+            try {
+                // Submit asynchronous scanning dispatch payload
+                const response = await fetch(`${BACKEND_URL}/api/start-scan`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ target: target })
+                });
+                
+                const data = await response.json();
+                if(response.status !== 200) {
+                    alert(data.error || "System rejected the target structure evaluation!");
+                    document.getElementById('progressBox').classList.add('hidden');
+                    return;
+                }
+
+                checkStatusInterval(data.task_id);
+            } catch (error) {
+                alert("Core connectivity error! Validate FastAPI micro-service states.");
+                document.getElementById('progressBox').classList.add('hidden');
+            }
+        }
+
+        function checkStatusInterval(taskId) {
+            const interval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/scan-status/${taskId}`);
+                    const data = await response.json();
+
+                    document.getElementById('progressBar').style.width = `${data.percent}%`;
+                    document.getElementById('percentText').innerText = `${data.percent}%`;
+                    document.getElementById('statusText').innerText = data.status || "Executing scan vectors...";
+
+                    if (data.state === "SUCCESS") {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            document.getElementById('progressBox').classList.add('hidden');
+                            showResults(data.result);
+                        }, 600);
+                    }
+                } catch (error) {
+                    clearInterval(interval);
+                    document.getElementById('progressBox').classList.add('hidden');
+                    alert("Status synchronization lifecycle exception!");
+                }
+            }, 2000);
+        }
+
+        function showResults(result) {
+            document.getElementById('resultBox').classList.remove('hidden');
+            const tbody = document.getElementById('portsTableBody');
+
+            if (result.error) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-500 font-medium">${result.error}</td></tr>`;
+                return;
+            }
+
+            if (!result.open_ports || result.open_ports.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-zinc-500 font-medium">All monitored system ports mapped closed.</td></tr>`;
+                return;
+            }
+
+            result.open_ports.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-zinc-900 transition duration-150";
+                tr.innerHTML = `
+                    <td class="p-4 text-green-500 font-bold">${item.port}</td>
+                    <td class="p-4 text-zinc-300 font-semibold uppercase tracking-wide">${item.service}</td>
+                    <td class="p-4 text-zinc-500 font-medium">${item.version}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html>
