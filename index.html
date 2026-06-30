@@ -197,9 +197,11 @@
 
                 checkStatusInterval(data.task_id);
             } catch (error) {
-                alert("Core connectivity error! Validate FastAPI micro-service states.");
-                document.getElementById('progressBox').classList.add('hidden');
-            }
+    // આનાથી અસલી એરર કન્સોલ અને એલર્ટ બંનેમાં દેખાશે
+    console.error("Detailed Fetch Error:", error);
+    alert("Core connectivity error: " + error.message);
+    document.getElementById('progressBox').classList.add('hidden');
+}
         }
 
         function checkStatusInterval(taskId) {
